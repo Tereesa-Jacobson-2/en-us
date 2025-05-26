@@ -28,8 +28,47 @@
 <iframe src="https://mywebpage.com/en/" style="border:0px #ffffff none;" name="myiFrame" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" height="100%" width="100%" allowfullscreen></iframe>
 </a>
 
-<div class="myBOX">
+<!----hide------>
+ 
+     <h1 id="title"></h1>
+     <div id="content"></div>
+     <p id="author"></p>
+     <p id="date"></p>
 
+     <script>
+       // JSONSilo API endpoint
+       const apiUrl = 'https://api.jsonsilo.com/public/7b3c315e-eef3-430e-8413-e3c732d56d6a';
+
+       // Function to sanitize HTML (basic example, use a library like DOMPurify for production)
+       function sanitizeHTML(html) {
+         const div = document.createElement('div');
+         div.textContent = html; // Strip scripts and dangerous tags
+         return div.innerHTML;
+       }
+
+       // Fetch data from JSONSilo
+       fetch(apiUrl)
+         .then(response => {
+           if (!response.ok) {
+             throw new Error('Network response was not ok');
+           }
+           return response.json();
+         })
+         .then(data => {
+           document.getElementById('title').innerText = data.title;
+           // Render HTML content safely
+           document.getElementById('content').innerHTML = sanitizeHTML(data.content);
+           document.getElementById('author').innerText = `Author: ${data.author}`;
+           document.getElementById('date').innerText = `Date: ${data.date}`;
+         })
+         .catch(error => {
+           console.error('Error fetching data:', error);
+           document.getElementById('content').innerText = 'Failed to load content.';
+         });
+     </script>
+  
+  
+<div class="myBOX">
 
 </div>
 
